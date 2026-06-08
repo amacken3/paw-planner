@@ -20,4 +20,8 @@ def create_app():
     from app.routes.pet_routes import pet_bp
     app.register_blueprint(pet_bp, url_prefix="/api")
 
+    @app.get("/api/health")
+    def health_check():
+        return {"message": "PawPlanner API is running"}, 200
+
     return app
