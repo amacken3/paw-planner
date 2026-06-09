@@ -1,4 +1,5 @@
 from flask import Blueprint, request, session
+
 from app.extensions import db
 from app.models import Pet
 from app.schemas import PetSchema

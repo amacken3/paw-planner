@@ -23,6 +23,9 @@ def create_app():
     from app.routes.care_routine_routes import care_routine_bp
     app.register_blueprint(care_routine_bp, url_prefix="/api")
 
+    from app.routes.medication_routes import medication_bp
+    app.register_blueprint(medication_bp, url_prefix="/api")
+
     @app.get("/api/health")
     def health_check():
         return {"message": "PawPlanner API is running"}, 200
