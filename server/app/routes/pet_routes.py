@@ -49,9 +49,13 @@ def create_pet():
         user_id=user_id
     )
 
-    db.session.add(pet)
-    db.session.commit()
-
+    try:
+        db.session.add(pet)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return {"error": "Unable to create pet."}, 500
+    
     return pet_schema.dump(pet), 201
 
 @pet_bp.get("/pets/<int:id>")
@@ -89,7 +93,11 @@ def update_pet(id):
     pet.weight = data.get("weight", pet.weight)
     pet.notes = data.get("notes", pet.notes)
 
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return {"error": "Unable to update pet."}, 500
 
     return pet_schema.dump(pet), 200
 
@@ -105,7 +113,11 @@ def delete_pet(id):
     if not pet:
         return {"error": "Pet not found."}, 404
 
-    db.session.delete(pet)
-    db.session.commit()
+    try:
+        db.session.delete(pet)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return {"error": "Unable to delete pet."}, 500
 
     return {}, 204
