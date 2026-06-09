@@ -25,8 +25,12 @@ def signup():
     user = User(username=username, email=email)
     user.password = password
 
-    db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return {"error": "Unable to create user."}, 500
 
     session["user_id"] = user.id
 
