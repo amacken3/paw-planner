@@ -1,5 +1,22 @@
 import { useState } from "react";
 
+function formatTimeForDisplay(value) {
+    if (!value) {
+      return "";
+    }
+
+    const [hours, minutes] = value.split(":");
+    const date = new Date();
+
+    date.setHours(Number(hours));
+    date.setMinutes(Number(minutes));
+
+    return date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+}
+
 function CareRoutineList({
     careRoutines,
     onDeleteCareRoutine,
@@ -120,6 +137,7 @@ function CareRoutineList({
                 name="frequency"
                 value={formData.frequency}
                 onChange={handleChange}
+                required
               />
             </label>
 
@@ -167,7 +185,7 @@ function CareRoutineList({
 
         {routine.time_of_day ? (
           <p>
-            <strong>Time:</strong> {routine.time_of_day}
+            <strong>Time:</strong> {formatTimeForDisplay(routine.time_of_day)}
           </p>
         ) : null}
 
