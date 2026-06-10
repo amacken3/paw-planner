@@ -1,50 +1,83 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useUser } from "./context/UserContext";
+import NavBar from "./components/NavBar";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import Dashboard from "./pages/Dashboard";
 import "./App.css";
 
 function HomePage() {
   return (
     <main>
       <h1>PawPlanner</h1>
-      <p>Organize pets, care routines, medications, and care events.</p>
+      <p>Organize your pets, care routines, medications, and care events.</p>
     </main>
   );
 }
 
-function LoginPage() {
-  return (
-    <main>
-      <h1>Login</h1>
-      <p>Login form will go here.</p>
-    </main>
-  );
+function ProtectedRoute({ children }) {
+  const { user, isCheckingSession } = useUser();
+
+  if (isCheckingSession) {
+    return <main><p>Checking session...</p></main>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 }
 
-function SignupPage() {
-  return (
-    <main>
-      <h1>Sign Up</h1>
-      <p>Signup form will go here.</p>
-    </main>
-  );
-}
+function RedirectIfLoggedIn({ children }) {
+  const { user, isCheckingSession } = useUser();
 
-function Dashboard() {
-  return (
-    <main>
-      <h1>Dashboard</h1>
-      <p>Protected dashboard placeholder.</p>
-    </main>
-  );
+  if (isCheckingSession) {
+    return <main><p>Checking session...</p></main>;
+  }
+
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
 }
 
 function App() {
   return (
     <BrowserRouter>
+      <NavBar />
+
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route
+          path="/login"
+          element={
+            <RedirectIfLoggedIn>
+              <LoginPage />
+            </RedirectIfLoggedIn>
+          }
+        />
+
+        <Route
+          path="/signup"
+          element={
+            <RedirectIfLoggedIn>
+              <SignupPage />
+            </RedirectIfLoggedIn>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
