@@ -5,6 +5,8 @@ import CareRoutineForm from "../components/CareRoutineForm";
 import CareRoutineList from "../components/CareRoutineList";
 import MedicationForm from "../components/MedicationForm";
 import MedicationList from "../components/MedicationList";
+import CareEventForm from "../components/CareEventForm";
+import CareEventList from "../components/CareEventList";
 
 function PetDetails() {
     const { id } = useParams();
@@ -12,11 +14,13 @@ function PetDetails() {
     const [careRoutines, setCareRoutines] = useState([]);
     const [error, setError] = useState("");
     const [medications, setMedications] = useState([]);
+    const [careEvents, setCareEvents] = useState([]);
 
     useEffect(() => {
         fetchPet();
         fetchCareRoutines();
         fetchMedications();
+        fetchCareEvents();
     }, [id]);
 
     async function fetchPet() {
@@ -183,18 +187,97 @@ function PetDetails() {
     }
 
         async function deleteMedication(medicationId) {
-        const response = await fetch(`${API_BASE_URL}/api/medications/${medicationId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/medications/${medicationId}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || "Unable to delete medication.");
+            }
+
+            setMedications(
+                medications.filter((medication) => medication.id !== medicationId)
+            );
+        }
+
+    async function fetchCareEvents() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/pets/${id}/care-events`, {
+            credentials: "include",
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+            throw new Error(data.error || "Unable to load care events.");
+            }
+
+            setCareEvents(data);
+        } catch (error) {
+            setError(error.message);
+        }
+    }
+
+    async function addCareEvent(formData) {
+        const response = await fetch(`${API_BASE_URL}/api/pets/${id}/care-events`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to create care event.");
+        }
+
+        setCareEvents([...careEvents, data]);
+        return data;
+    }
+
+    async function updateCareEvent(careEventId, formData) {
+        const response = await fetch(`${API_BASE_URL}/api/care-events/${careEventId}`, {
+            method: "PATCH",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to update care event.");
+        }
+
+        setCareEvents(
+            careEvents.map((careEvent) =>
+            careEvent.id === careEventId ? data : careEvent
+            )
+        );
+
+        return data;
+    }
+
+    async function deleteCareEvent(careEventId) {
+        const response = await fetch(`${API_BASE_URL}/api/care-events/${careEventId}`, {
             method: "DELETE",
             credentials: "include",
         });
 
         if (!response.ok) {
             const data = await response.json();
-            throw new Error(data.error || "Unable to delete medication.");
+            throw new Error(data.error || "Unable to delete care event.");
         }
 
-        setMedications(
-            medications.filter((medication) => medication.id !== medicationId)
+        setCareEvents(
+            careEvents.filter((careEvent) => careEvent.id !== careEventId)
         );
     }
 
@@ -217,65 +300,85 @@ function PetDetails() {
 
     return (
         <main>
-        <Link to="/dashboard">Back to Dashboard</Link>
+            <Link to="/dashboard">Back to Dashboard</Link>
 
-        <h1>{pet.name}</h1>
+            <h1>{pet.name}</h1>
 
-        <p>
-            <strong>Species:</strong> {pet.species}
-        </p>
-
-        {pet.breed ? (
             <p>
-            <strong>Breed:</strong> {pet.breed}
+                <strong>Species:</strong> {pet.species}
             </p>
-        ) : null}
 
-        {pet.age ? (
-            <p>
-            <strong>Age:</strong> {pet.age}
-            </p>
-        ) : null}
+            {pet.breed ? (
+                <p>
+                <strong>Breed:</strong> {pet.breed}
+                </p>
+            ) : null}
 
-        {pet.weight ? (
-            <p>
-            <strong>Weight:</strong> {pet.weight}
-            </p>
-        ) : null}
+            {pet.age ? (
+                <p>
+                <strong>Age:</strong> {pet.age}
+                </p>
+            ) : null}
 
-        {pet.notes ? (
-            <p>
-            <strong>Notes:</strong> {pet.notes}
-            </p>
-        ) : null}
+            {pet.weight ? (
+                <p>
+                <strong>Weight:</strong> {pet.weight}
+                </p>
+            ) : null}
 
-        <hr />
+            {pet.notes ? (
+                <p>
+                <strong>Notes:</strong> {pet.notes}
+                </p>
+            ) : null}
 
-        <section>
-            <h2>Care Routines</h2>
+            <hr />
 
-            <CareRoutineForm onAddCareRoutine={addCareRoutine} />
+            <section>
+                <h2>Care Routines</h2>
 
-            <CareRoutineList
-                careRoutines={careRoutines}
-                onDeleteCareRoutine={deleteCareRoutine}
-                onUpdateCareRoutine={updateCareRoutine}
+                <CareRoutineForm onAddCareRoutine={addCareRoutine} />
+
+                <CareRoutineList
+                    careRoutines={careRoutines}
+                    onDeleteCareRoutine={deleteCareRoutine}
+                    onUpdateCareRoutine={updateCareRoutine}
+                    />
+            </section>
+
+            <hr />
+
+            <section>
+                <h2>Medications</h2>
+
+                <MedicationForm onAddMedication={addMedication} />
+
+                <MedicationList
+                    medications={medications}
+                    onUpdateMedication={updateMedication}
+                    onDeleteMedication={deleteMedication}
                 />
-        </section>
+            </section>
 
-        <hr />
+            <hr />
 
-        <section>
-            <h2>Medications</h2>
+            <section>
+            <h2>Care Events</h2>
 
-            <MedicationForm onAddMedication={addMedication} />
-
-            <MedicationList
+            <CareEventForm
+                onAddCareEvent={addCareEvent}
+                careRoutines={careRoutines}
                 medications={medications}
-                onUpdateMedication={updateMedication}
-                onDeleteMedication={deleteMedication}
             />
-        </section>
+
+            <CareEventList
+                careEvents={careEvents}
+                careRoutines={careRoutines}
+                medications={medications}
+                onUpdateCareEvent={updateCareEvent}
+                onDeleteCareEvent={deleteCareEvent}
+            />
+            </section>
         </main>
     );
 }
