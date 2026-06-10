@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import API_BASE_URL from "../services/api";
+import CareRoutineForm from "../components/CareRoutineForm";
+import CareRoutineList from "../components/CareRoutineList";
 
 function PetDetails() {
     const { id } = useParams();
     const [pet, setPet] = useState(null);
+    const [careRoutines, setCareRoutines] = useState([]);
     const [error, setError] = useState("");
 
     useEffect(() => {
         fetchPet();
+        fetchCareRoutines();
     }, [id]);
 
     async function fetchPet() {
@@ -27,6 +31,88 @@ function PetDetails() {
         } catch (error) {
         setError(error.message);
         }
+    }
+
+    async function fetchCareRoutines() {
+        try {
+        const response = await fetch(
+            `${API_BASE_URL}/api/pets/${id}/care-routines`,
+            {
+            credentials: "include",
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to load care routines.");
+        }
+
+        setCareRoutines(data);
+        } catch (error) {
+        setError(error.message);
+        }
+    }
+
+    async function addCareRoutine(formData) {
+        const response = await fetch(`${API_BASE_URL}/api/pets/${id}/care-routines`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+        throw new Error(data.error || "Unable to create care routine.");
+        }
+
+        setCareRoutines([...careRoutines, data]);
+        return data;
+    }
+
+    async function updateCareRoutine(routineId, formData) {
+        const response = await fetch(`${API_BASE_URL}/api/care-routines/${routineId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+        throw new Error(data.error || "Unable to update care routine.");
+        }
+
+        setCareRoutines(
+        careRoutines.map((routine) =>
+            routine.id === routineId ? data : routine
+        )
+        );
+
+        return data;
+    }
+
+    async function deleteCareRoutine(routineId) {
+        const response = await fetch(`${API_BASE_URL}/api/care-routines/${routineId}`, {
+        method: "DELETE",
+        credentials: "include",
+        });
+
+        if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Unable to delete care routine.");
+        }
+
+        setCareRoutines(
+        careRoutines.filter((routine) => routine.id !== routineId)
+        );
     }
 
     if (error) {
@@ -82,10 +168,17 @@ function PetDetails() {
 
         <hr />
 
-        <p>
-            Care routines, medications, and care events will be added on the next
-            frontend branch.
-        </p>
+        <section>
+            <h2>Care Routines</h2>
+
+            <CareRoutineForm onAddCareRoutine={addCareRoutine} />
+
+            <CareRoutineList
+            careRoutines={careRoutines}
+            onDeleteCareRoutine={deleteCareRoutine}
+            onUpdateCareRoutine={updateCareRoutine}
+            />
+        </section>
         </main>
     );
 }
