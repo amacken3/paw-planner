@@ -79,6 +79,7 @@ function CareRoutineForm({ onAddCareRoutine }) {
             value={formData.frequency}
             onChange={handleChange}
             placeholder="Daily, weekly, twice a day..."
+            required
             />
         </label>
 

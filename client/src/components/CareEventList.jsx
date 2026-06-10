@@ -16,6 +16,20 @@ function formatDateTimeForInput(value) {
   return value.replace(" ", "T").slice(0, 16);
 }
 
+function formatDateTimeForDisplay(value) {
+    if (!value) {
+      return "";
+    }
+
+    return new Date(value).toLocaleString([], {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+}
+
 function getRoutineTitle(careRoutines, routineId) {
   const routine = careRoutines.find((routine) => routine.id === routineId);
   return routine ? routine.title : null;
@@ -258,13 +272,15 @@ function CareEventCard({
 
       {careEvent.scheduled_for ? (
         <p>
-          <strong>Scheduled For:</strong> {careEvent.scheduled_for}
+          <strong>Scheduled For:</strong>{" "}
+          {formatDateTimeForDisplay(careEvent.scheduled_for)}
         </p>
       ) : null}
 
       {careEvent.completed_at ? (
         <p>
-          <strong>Completed At:</strong> {careEvent.completed_at}
+          <strong>Completed At:</strong>{" "}
+          {formatDateTimeForDisplay(careEvent.completed_at)}
         </p>
       ) : null}
 
