@@ -3,72 +3,72 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
 function LoginPage() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [error, setError] = useState("");
-
-  const navigate = useNavigate();
-  const { login } = useUser();
-
-  function handleChange(event) {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
     });
-  }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
+    const [error, setError] = useState("");
 
-    try {
-      await login(formData);
-      navigate("/dashboard");
-    } catch (error) {
-      setError(error.message);
+    const navigate = useNavigate();
+    const { login } = useUser();
+
+    function handleChange(event) {
+        setFormData({
+        ...formData,
+        [event.target.name]: event.target.value,
+        });
     }
-  }
 
-  return (
-    <main>
-      <h1>Login</h1>
+    async function handleSubmit(event) {
+        event.preventDefault();
+        setError("");
 
-      {error ? <p className="error">{error}</p> : null}
+        try {
+        await login(formData);
+        navigate("/dashboard");
+        } catch (error) {
+        setError(error.message);
+        }
+    }
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
+    return (
+        <main>
+        <h1>Login</h1>
 
-        <label>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        {error ? <p className="error">{error}</p> : null}
 
-        <button type="submit">Login</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+            <label>
+            Email
+            <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+            />
+            </label>
 
-      <p>
-        Need an account? <Link to="/signup">Sign up here.</Link>
-      </p>
-    </main>
-  );
-}
+            <label>
+            Password
+            <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+            />
+            </label>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>
+            Need an account? <Link to="/signup">Sign up here.</Link>
+        </p>
+        </main>
+    );
+    }
 
 export default LoginPage;
