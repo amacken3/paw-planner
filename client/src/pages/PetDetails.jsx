@@ -74,6 +74,31 @@ function PetDetails() {
         return data;
     }
 
+    async function updateCareRoutine(routineId, formData) {
+        const response = await fetch(`${API_BASE_URL}/api/care-routines/${routineId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+        throw new Error(data.error || "Unable to update care routine.");
+        }
+
+        setCareRoutines(
+        careRoutines.map((routine) =>
+            routine.id === routineId ? data : routine
+        )
+        );
+
+        return data;
+    }
+
     async function deleteCareRoutine(routineId) {
         const response = await fetch(`${API_BASE_URL}/api/care-routines/${routineId}`, {
         method: "DELETE",
@@ -145,10 +170,13 @@ function PetDetails() {
 
         <section>
             <h2>Care Routines</h2>
+
             <CareRoutineForm onAddCareRoutine={addCareRoutine} />
+
             <CareRoutineList
             careRoutines={careRoutines}
             onDeleteCareRoutine={deleteCareRoutine}
+            onUpdateCareRoutine={updateCareRoutine}
             />
         </section>
         </main>

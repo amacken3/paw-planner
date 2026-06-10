@@ -23,17 +23,24 @@ function CareRoutineForm({ onAddCareRoutine }) {
         setError("");
 
         try {
-        await onAddCareRoutine(formData);
+            const routineData = {
+            ...formData,
+            time_of_day: formData.time_of_day
+                ? `${formData.time_of_day}:00`
+                : "",
+            };
 
-        setFormData({
+            await onAddCareRoutine(routineData);
+
+            setFormData({
             title: "",
             category: "",
             frequency: "",
             time_of_day: "",
             notes: "",
-        });
+            });
         } catch (error) {
-        setError(error.message);
+            setError(error.message);
         }
     }
 
