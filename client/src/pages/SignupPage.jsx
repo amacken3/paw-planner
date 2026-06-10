@@ -3,84 +3,84 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
 function SignupPage() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
-  const [error, setError] = useState("");
-
-  const navigate = useNavigate();
-  const { signup } = useUser();
-
-  function handleChange(event) {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
     });
-  }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
+    const [error, setError] = useState("");
 
-    try {
-      await signup(formData);
-      navigate("/dashboard");
-    } catch (error) {
-      setError(error.message);
+    const navigate = useNavigate();
+    const { signup } = useUser();
+
+    function handleChange(event) {
+        setFormData({
+        ...formData,
+        [event.target.name]: event.target.value,
+        });
     }
-  }
 
-  return (
-    <main>
-      <h1>Sign Up</h1>
+    async function handleSubmit(event) {
+        event.preventDefault();
+        setError("");
 
-      {error ? <p className="error">{error}</p> : null}
+        try {
+        await signup(formData);
+        navigate("/dashboard");
+        } catch (error) {
+        setError(error.message);
+        }
+    }
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </label>
+    return (
+        <main>
+        <h1>Sign Up</h1>
 
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        {error ? <p className="error">{error}</p> : null}
 
-        <label>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <form onSubmit={handleSubmit}>
+            <label>
+            Username
+            <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+            />
+            </label>
 
-        <button type="submit">Create Account</button>
-      </form>
+            <label>
+            Email
+            <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+            />
+            </label>
 
-      <p>
-        Already have an account? <Link to="/login">Log in here.</Link>
-      </p>
-    </main>
-  );
+            <label>
+            Password
+            <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+            />
+            </label>
+
+            <button type="submit">Create Account</button>
+        </form>
+
+        <p>
+            Already have an account? <Link to="/login">Log in here.</Link>
+        </p>
+        </main>
+    );
 }
 
 export default SignupPage;

@@ -1,113 +1,113 @@
 import { useState } from "react";
 
 function PetForm({ onAddPet }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    species: "",
-    breed: "",
-    age: "",
-    weight: "",
-    notes: "",
-  });
-
-  const [error, setError] = useState("");
-
-  function handleChange(event) {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
-
-    try {
-      await onAddPet(formData);
-
-      setFormData({
+    const [formData, setFormData] = useState({
         name: "",
         species: "",
         breed: "",
         age: "",
         weight: "",
         notes: "",
-      });
-    } catch (error) {
-      setError(error.message);
+    });
+
+    const [error, setError] = useState("");
+
+    function handleChange(event) {
+        setFormData({
+        ...formData,
+        [event.target.name]: event.target.value,
+        });
     }
-  }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      {error ? <p className="error">{error}</p> : null}
+    async function handleSubmit(event) {
+        event.preventDefault();
+        setError("");
 
-      <label>
-        Name
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-      </label>
+        try {
+        await onAddPet(formData);
 
-      <label>
-        Species
-        <input
-          type="text"
-          name="species"
-          value={formData.species}
-          onChange={handleChange}
-          required
-        />
-      </label>
+        setFormData({
+            name: "",
+            species: "",
+            breed: "",
+            age: "",
+            weight: "",
+            notes: "",
+        });
+        } catch (error) {
+        setError(error.message);
+        }
+    }
 
-      <label>
-        Breed
-        <input
-          type="text"
-          name="breed"
-          value={formData.breed}
-          onChange={handleChange}
-        />
-      </label>
+    return (
+        <form onSubmit={handleSubmit}>
+        {error ? <p className="error">{error}</p> : null}
 
-      <label>
-        Age
-        <input
-          type="number"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-        />
-      </label>
+        <label>
+            Name
+            <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            />
+        </label>
 
-      <label>
-        Weight
-        <input
-          type="number"
-          step="0.1"
-          name="weight"
-          value={formData.weight}
-          onChange={handleChange}
-        />
-      </label>
+        <label>
+            Species
+            <input
+            type="text"
+            name="species"
+            value={formData.species}
+            onChange={handleChange}
+            required
+            />
+        </label>
 
-      <label>
-        Notes
-        <textarea
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-        />
-      </label>
+        <label>
+            Breed
+            <input
+            type="text"
+            name="breed"
+            value={formData.breed}
+            onChange={handleChange}
+            />
+        </label>
 
-      <button type="submit">Add Pet</button>
-    </form>
-  );
+        <label>
+            Age
+            <input
+            type="number"
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+            />
+        </label>
+
+        <label>
+            Weight
+            <input
+            type="number"
+            step="0.1"
+            name="weight"
+            value={formData.weight}
+            onChange={handleChange}
+            />
+        </label>
+
+        <label>
+            Notes
+            <textarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            />
+        </label>
+
+        <button type="submit">Add Pet</button>
+        </form>
+    );
 }
 
-export default PetForm;
+    export default PetForm;

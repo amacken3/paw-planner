@@ -1,6 +1,6 @@
 import PetCard from "./PetCard";
 
-function PetList({ pets, onDeletePet }) {
+function PetList({ pets, onDeletePet, onUpdatePet }) {
   if (pets.length === 0) {
     return <p>No pets added yet.</p>;
   }
@@ -8,7 +8,12 @@ function PetList({ pets, onDeletePet }) {
   return (
     <div>
       {pets.map((pet) => (
-        <PetCard key={pet.id} pet={pet} onDeletePet={onDeletePet} />
+        <PetCard
+          key={pet.id}
+          pet={pet}
+          onDeletePet={onDeletePet}
+          onUpdatePet={onUpdatePet}
+        />
       ))}
     </div>
   );
