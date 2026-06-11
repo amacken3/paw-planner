@@ -1,7 +1,8 @@
 .page {
   width: min(1120px, 92vw);
   margin: 0 auto;
-  padding: 2rem 0 4rem;
+  padding: 2rem clamp(1rem, 3vw, 2rem) 4rem;
+  box-sizing: border-box;
 }
 
 .backLink {
@@ -86,6 +87,7 @@
 .petStats strong {
   color: #111827;
   font-size: 1rem;
+  overflow-wrap: anywhere;
 }
 
 .notesCard {
@@ -133,7 +135,7 @@
 
 @media (max-width: 720px) {
   .page {
-    padding-top: 1.25rem;
+    padding: 1.25rem 1rem 4rem;
   }
 
   .petHero {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./MedicationForm.module.css";
 
 function MedicationForm({ onAddMedication }) {
     const [formData, setFormData] = useState({
@@ -44,10 +45,10 @@ function MedicationForm({ onAddMedication }) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
         {error ? <p className="error">{error}</p> : null}
 
-        <label>
+        <label className={styles.field}>
             Medication Name
             <input
             type="text"
@@ -58,29 +59,31 @@ function MedicationForm({ onAddMedication }) {
             />
         </label>
 
-        <label>
+        <div className={styles.row}>
+            <label className={styles.field}>
             Dosage
             <input
-            type="text"
-            name="dosage"
-            value={formData.dosage}
-            onChange={handleChange}
-            placeholder="Example: 1, 2.5, 10"
+                type="text"
+                name="dosage"
+                value={formData.dosage}
+                onChange={handleChange}
+                placeholder="Example: 1, 2.5, 10"
             />
-        </label>
+            </label>
 
-        <label>
+            <label className={styles.field}>
             Unit
             <input
-            type="text"
-            name="unit"
-            value={formData.unit}
-            onChange={handleChange}
-            placeholder="mg, tablet, capsule..."
+                type="text"
+                name="unit"
+                value={formData.unit}
+                onChange={handleChange}
+                placeholder="mg, tablet, capsule..."
             />
-        </label>
+            </label>
+        </div>
 
-        <label>
+        <label className={styles.field}>
             Instructions
             <textarea
             name="instructions"
@@ -90,7 +93,7 @@ function MedicationForm({ onAddMedication }) {
             />
         </label>
 
-        <label>
+        <label className={styles.field}>
             Frequency
             <input
             type="text"
@@ -101,27 +104,29 @@ function MedicationForm({ onAddMedication }) {
             />
         </label>
 
-        <label>
+        <div className={styles.row}>
+            <label className={styles.field}>
             Start Date
             <input
-            type="date"
-            name="start_date"
-            value={formData.start_date}
-            onChange={handleChange}
+                type="date"
+                name="start_date"
+                value={formData.start_date}
+                onChange={handleChange}
             />
-        </label>
+            </label>
 
-        <label>
+            <label className={styles.field}>
             End Date
             <input
-            type="date"
-            name="end_date"
-            value={formData.end_date}
-            onChange={handleChange}
+                type="date"
+                name="end_date"
+                value={formData.end_date}
+                onChange={handleChange}
             />
-        </label>
+            </label>
+        </div>
 
-        <label>
+        <label className={styles.field}>
             Notes
             <textarea
             name="notes"
@@ -130,7 +135,9 @@ function MedicationForm({ onAddMedication }) {
             />
         </label>
 
-        <button type="submit">Add Medication</button>
+        <button className={styles.submitButton} type="submit">
+            Add Medication
+        </button>
         </form>
     );
 }

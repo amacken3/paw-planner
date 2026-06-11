@@ -1,14 +1,15 @@
 import { useState } from "react";
+import styles from "./CareEventForm.module.css";
 
 function formatDateTimeForBackend(value) {
-  if (!value) {
-    return "";
-  }
+    if (!value) {
+        return "";
+    }
 
-  return `${value.replace("T", " ")}:00`;
-}
+    return `${value.replace("T", " ")}:00`;
+    }
 
-function CareEventForm({ onAddCareEvent, careRoutines, medications }) {
+    function CareEventForm({ onAddCareEvent, careRoutines, medications }) {
     const [formData, setFormData] = useState({
         title: "",
         category: "",
@@ -37,7 +38,9 @@ function CareEventForm({ onAddCareEvent, careRoutines, medications }) {
         const careEventData = {
             ...formData,
             scheduled_for: formatDateTimeForBackend(formData.scheduled_for),
-            completed_at: formatDateTimeForBackend(formData.completed_at),
+            completed_at: formData.completed_at
+            ? formatDateTimeForBackend(formData.completed_at)
+            : null,
             care_routine_id: formData.care_routine_id || null,
             medication_id: formData.medication_id || null,
         };
@@ -60,10 +63,10 @@ function CareEventForm({ onAddCareEvent, careRoutines, medications }) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
         {error ? <p className="error">{error}</p> : null}
 
-        <label>
+        <label className={styles.field}>
             Title
             <input
             type="text"
@@ -74,82 +77,92 @@ function CareEventForm({ onAddCareEvent, careRoutines, medications }) {
             />
         </label>
 
-        <label>
+        <div className={styles.row}>
+            <label className={styles.field}>
             Category
             <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            placeholder="Feeding, medication, grooming..."
-            required
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                placeholder="Feeding, medication, grooming..."
+                required
             />
-        </label>
+            </label>
 
-        <label>
+            <label className={styles.field}>
+            Status
+            <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+            >
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="missed">Missed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+            </label>
+        </div>
+
+        <div className={styles.row}>
+            <label className={styles.field}>
             Scheduled For
             <input
-            type="datetime-local"
-            name="scheduled_for"
-            value={formData.scheduled_for}
-            onChange={handleChange}
-            required
+                type="datetime-local"
+                name="scheduled_for"
+                value={formData.scheduled_for}
+                onChange={handleChange}
+                required
             />
-        </label>
+            </label>
 
-        <label>
+            <label className={styles.field}>
             Completed At
             <input
-            type="datetime-local"
-            name="completed_at"
-            value={formData.completed_at}
-            onChange={handleChange}
+                type="datetime-local"
+                name="completed_at"
+                value={formData.completed_at}
+                onChange={handleChange}
             />
-        </label>
+            </label>
+        </div>
 
-        <label>
-            Status
-            <select name="status" value={formData.status} onChange={handleChange}>
-            <option value="scheduled">Scheduled</option>
-            <option value="completed">Completed</option>
-            <option value="missed">Missed</option>
-            <option value="cancelled">Cancelled</option>
-            </select>
-        </label>
-
-        <label>
+        <div className={styles.row}>
+            <label className={styles.field}>
             Related Care Routine
             <select
-            name="care_routine_id"
-            value={formData.care_routine_id}
-            onChange={handleChange}
+                name="care_routine_id"
+                value={formData.care_routine_id}
+                onChange={handleChange}
             >
-            <option value="">None</option>
-            {careRoutines.map((routine) => (
+                <option value="">None</option>
+                {careRoutines.map((routine) => (
                 <option key={routine.id} value={routine.id}>
-                {routine.title}
+                    {routine.title}
                 </option>
-            ))}
+                ))}
             </select>
-        </label>
+            </label>
 
-        <label>
+            <label className={styles.field}>
             Related Medication
             <select
-            name="medication_id"
-            value={formData.medication_id}
-            onChange={handleChange}
+                name="medication_id"
+                value={formData.medication_id}
+                onChange={handleChange}
             >
-            <option value="">None</option>
-            {medications.map((medication) => (
+                <option value="">None</option>
+                {medications.map((medication) => (
                 <option key={medication.id} value={medication.id}>
-                {medication.name}
+                    {medication.name}
                 </option>
-            ))}
+                ))}
             </select>
-        </label>
+            </label>
+        </div>
 
-        <label>
+        <label className={styles.field}>
             Notes
             <textarea
             name="notes"
@@ -158,7 +171,9 @@ function CareEventForm({ onAddCareEvent, careRoutines, medications }) {
             />
         </label>
 
-        <button type="submit">Add Care Event</button>
+        <button className={styles.submitButton} type="submit">
+            Add Care Event
+        </button>
         </form>
     );
 }

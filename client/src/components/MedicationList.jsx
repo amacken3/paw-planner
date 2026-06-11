@@ -25,12 +25,14 @@ function MedicationList({ medications, onUpdateMedication, onDeleteMedication })
     );
     }
 
-    function MedicationCard({ medication, onUpdateMedication, onDeleteMedication }) {
+function MedicationCard({ medication, onUpdateMedication, onDeleteMedication }) {
     const [isEditing, setIsEditing] = useState(false);
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
         name: medication.name || "",
         dosage: medication.dosage || "",
+        unit: medication.unit || "",
+        instructions: medication.instructions || "",
         frequency: medication.frequency || "",
         start_date: medication.start_date || "",
         end_date: medication.end_date || "",
@@ -51,7 +53,6 @@ function MedicationList({ medications, onUpdateMedication, onDeleteMedication })
         try {
         const medicationData = {
             ...formData,
-            dosage: formData.dosage ? Number(formData.dosage) : "",
         };
 
         await onUpdateMedication(medication.id, medicationData);
@@ -73,6 +74,8 @@ function MedicationList({ medications, onUpdateMedication, onDeleteMedication })
         setFormData({
         name: medication.name || "",
         dosage: medication.dosage || "",
+        unit: medication.unit || "",
+        instructions: medication.instructions || "",
         frequency: medication.frequency || "",
         start_date: medication.start_date || "",
         end_date: medication.end_date || "",
@@ -82,6 +85,11 @@ function MedicationList({ medications, onUpdateMedication, onDeleteMedication })
         setError("");
         setIsEditing(false);
     }
+
+    const dosageDisplay =
+        medication.dosage && medication.unit
+        ? `${medication.dosage} ${medication.unit}`
+        : medication.dosage || medication.unit || "";
 
     if (isEditing) {
         return (
@@ -107,12 +115,32 @@ function MedicationList({ medications, onUpdateMedication, onDeleteMedication })
             <label>
                 Dosage
                 <input
-                type="number"
-                step="0.1"
+                type="text"
                 name="dosage"
                 value={formData.dosage}
                 onChange={handleChange}
-                required
+                placeholder="Example: 1, 2.5, 10"
+                />
+            </label>
+
+            <label>
+                Unit
+                <input
+                type="text"
+                name="unit"
+                value={formData.unit}
+                onChange={handleChange}
+                placeholder="mg, tablet, capsule..."
+                />
+            </label>
+
+            <label>
+                Instructions
+                <textarea
+                name="instructions"
+                value={formData.instructions}
+                onChange={handleChange}
+                placeholder="Give with food, once in the morning..."
                 />
             </label>
 
@@ -193,15 +221,19 @@ function MedicationList({ medications, onUpdateMedication, onDeleteMedication })
         </div>
 
         <div className={styles.details}>
+            {dosageDisplay ? (
             <p>
-            <span>Dosage</span>
-            <strong>{medication.dosage}</strong>
+                <span>Dosage</span>
+                <strong>{dosageDisplay}</strong>
             </p>
+            ) : null}
 
+            {medication.frequency ? (
             <p>
-            <span>Frequency</span>
-            <strong>{medication.frequency}</strong>
+                <span>Frequency</span>
+                <strong>{medication.frequency}</strong>
             </p>
+            ) : null}
 
             {medication.start_date ? (
             <p>
@@ -217,6 +249,10 @@ function MedicationList({ medications, onUpdateMedication, onDeleteMedication })
             </p>
             ) : null}
         </div>
+
+        {medication.instructions ? (
+            <p className={styles.notes}>{medication.instructions}</p>
+        ) : null}
 
         {medication.notes ? <p className={styles.notes}>{medication.notes}</p> : null}
 
