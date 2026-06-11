@@ -1,0 +1,142 @@
+.page {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.backLink {
+  display: inline-flex;
+  margin-bottom: 1.25rem;
+  color: #f97316;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  color: #ea580c;
+}
+
+.loading {
+  padding: 2rem;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+.petHero {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #fff7ed, #fef3c7);
+  border: 1px solid #fed7aa;
+  box-shadow: 0 20px 45px rgba(120, 53, 15, 0.08);
+}
+
+.petIntro h1 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+}
+
+.kicker {
+  margin: 0 0 0.35rem;
+  color: #f97316;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  max-width: 640px;
+  margin: 0.75rem 0 0;
+  color: #6b7280;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.petStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.85rem;
+}
+
+.petStats p {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(254, 215, 170, 0.9);
+}
+
+.petStats span,
+.notesCard span {
+  color: #92400e;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.petStats strong {
+  color: #111827;
+  font-size: 1rem;
+}
+
+.notesCard {
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(254, 215, 170, 0.9);
+}
+
+.notesCard p {
+  margin: 0.35rem 0 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.pageGroup {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.groupHeader {
+  padding: 0 0.25rem;
+}
+
+.groupHeader p:last-child {
+  max-width: 720px;
+  margin: 0.4rem 0 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.planGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .planGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding-top: 1.25rem;
+  }
+
+  .petHero {
+    padding: 1.5rem;
+  }
+}

@@ -1,0 +1,101 @@
+.section {
+  padding: 1.5rem;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.header h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.4rem;
+}
+
+.kicker {
+  margin: 0 0 0.3rem;
+  color: #f97316;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.description {
+  max-width: 460px;
+  margin: 0.4rem 0 0;
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 0.85rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.toggleButton {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 0.9rem;
+  background: #f97316;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.toggleButton:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+.formWrapper {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border-radius: 18px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 560px) {
+  .section {
+    padding: 1.15rem;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
