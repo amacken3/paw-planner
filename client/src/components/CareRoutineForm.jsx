@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./CareRoutineForm.module.css";
 
 function CareRoutineForm({ onAddCareRoutine }) {
     const [formData, setFormData] = useState({
@@ -23,32 +24,32 @@ function CareRoutineForm({ onAddCareRoutine }) {
         setError("");
 
         try {
-            const routineData = {
+        const routineData = {
             ...formData,
             time_of_day: formData.time_of_day
-                ? `${formData.time_of_day}:00`
-                : "",
-            };
+            ? `${formData.time_of_day}:00`
+            : "",
+        };
 
-            await onAddCareRoutine(routineData);
+        await onAddCareRoutine(routineData);
 
-            setFormData({
+        setFormData({
             title: "",
             category: "",
             frequency: "",
             time_of_day: "",
             notes: "",
-            });
+        });
         } catch (error) {
-            setError(error.message);
+        setError(error.message);
         }
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
         {error ? <p className="error">{error}</p> : null}
 
-        <label>
+        <label className={styles.field}>
             Title
             <input
             type="text"
@@ -59,31 +60,33 @@ function CareRoutineForm({ onAddCareRoutine }) {
             />
         </label>
 
-        <label>
+        <div className={styles.row}>
+            <label className={styles.field}>
             Category
             <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            placeholder="Feeding, exercise, grooming..."
-            required
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                placeholder="Feeding, exercise, grooming..."
+                required
             />
-        </label>
+            </label>
 
-        <label>
+            <label className={styles.field}>
             Frequency
             <input
-            type="text"
-            name="frequency"
-            value={formData.frequency}
-            onChange={handleChange}
-            placeholder="Daily, weekly, twice a day..."
-            required
+                type="text"
+                name="frequency"
+                value={formData.frequency}
+                onChange={handleChange}
+                placeholder="Daily, weekly, twice a day..."
+                required
             />
-        </label>
+            </label>
+        </div>
 
-        <label>
+        <label className={styles.field}>
             Time of Day
             <input
             type="time"
@@ -93,7 +96,7 @@ function CareRoutineForm({ onAddCareRoutine }) {
             />
         </label>
 
-        <label>
+        <label className={styles.field}>
             Notes
             <textarea
             name="notes"
@@ -102,7 +105,9 @@ function CareRoutineForm({ onAddCareRoutine }) {
             />
         </label>
 
-        <button type="submit">Add Care Routine</button>
+        <button className={styles.submitButton} type="submit">
+            Add Care Routine
+        </button>
         </form>
     );
 }
