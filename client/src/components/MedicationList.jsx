@@ -1,16 +1,18 @@
 import { useState } from "react";
+import styles from "./MedicationList.module.css";
 
-function MedicationList({
-  medications,
-  onUpdateMedication,
-  onDeleteMedication,
-}) {
+function MedicationList({ medications, onUpdateMedication, onDeleteMedication }) {
     if (medications.length === 0) {
-        return <p>No medications added yet.</p>;
+        return (
+        <div className={styles.emptyState}>
+            <p>No medications added yet.</p>
+            <span>Add a medication to track dosage, frequency, and notes.</span>
+        </div>
+        );
     }
 
     return (
-        <div>
+        <div className={styles.cardGrid}>
         {medications.map((medication) => (
             <MedicationCard
             key={medication.id}
@@ -23,18 +25,12 @@ function MedicationList({
     );
     }
 
-    function MedicationCard({
-    medication,
-    onUpdateMedication,
-    onDeleteMedication,
-    }) {
+    function MedicationCard({ medication, onUpdateMedication, onDeleteMedication }) {
     const [isEditing, setIsEditing] = useState(false);
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
         name: medication.name || "",
         dosage: medication.dosage || "",
-        unit: medication.unit || "",
-        instructions: medication.instructions || "",
         frequency: medication.frequency || "",
         start_date: medication.start_date || "",
         end_date: medication.end_date || "",
@@ -53,7 +49,12 @@ function MedicationList({
         setError("");
 
         try {
-        await onUpdateMedication(medication.id, formData);
+        const medicationData = {
+            ...formData,
+            dosage: formData.dosage ? Number(formData.dosage) : "",
+        };
+
+        await onUpdateMedication(medication.id, medicationData);
         setIsEditing(false);
         } catch (error) {
         setError(error.message);
@@ -72,8 +73,6 @@ function MedicationList({
         setFormData({
         name: medication.name || "",
         dosage: medication.dosage || "",
-        unit: medication.unit || "",
-        instructions: medication.instructions || "",
         frequency: medication.frequency || "",
         start_date: medication.start_date || "",
         end_date: medication.end_date || "",
@@ -86,14 +85,16 @@ function MedicationList({
 
     if (isEditing) {
         return (
-        <article>
+        <article className={styles.card}>
+            <div className={styles.cardHeader}>
             <h3>Edit {medication.name}</h3>
+            </div>
 
             {error ? <p className="error">{error}</p> : null}
 
-            <form onSubmit={handleUpdate}>
+            <form className={styles.editForm} onSubmit={handleUpdate}>
             <label>
-                Medication Name
+                Name
                 <input
                 type="text"
                 name="name"
@@ -106,29 +107,12 @@ function MedicationList({
             <label>
                 Dosage
                 <input
-                type="text"
+                type="number"
+                step="0.1"
                 name="dosage"
                 value={formData.dosage}
                 onChange={handleChange}
-                />
-            </label>
-
-            <label>
-                Unit
-                <input
-                type="text"
-                name="unit"
-                value={formData.unit}
-                onChange={handleChange}
-                />
-            </label>
-
-            <label>
-                Instructions
-                <textarea
-                name="instructions"
-                value={formData.instructions}
-                onChange={handleChange}
+                required
                 />
             </label>
 
@@ -139,6 +123,7 @@ function MedicationList({
                 name="frequency"
                 value={formData.frequency}
                 onChange={handleChange}
+                required
                 />
             </label>
 
@@ -171,64 +156,75 @@ function MedicationList({
                 />
             </label>
 
-            <button type="submit">Save</button>
-            <button type="button" onClick={handleCancel}>
+            <div className={styles.actions}>
+                <button className={styles.primaryButton} type="submit">
+                Save
+                </button>
+                <button
+                className={styles.secondaryButton}
+                type="button"
+                onClick={handleCancel}
+                >
                 Cancel
-            </button>
+                </button>
+            </div>
             </form>
         </article>
         );
     }
 
     return (
-        <article>
-        <h3>{medication.name}</h3>
+        <article className={styles.card}>
+        <div className={styles.cardHeader}>
+            <div>
+            <p className={styles.kicker}>Medication</p>
+            <h3>{medication.name}</h3>
+            </div>
 
-        {medication.dosage ? (
+            <button
+            className={styles.iconButton}
+            type="button"
+            onClick={() => setIsEditing(true)}
+            aria-label={`Edit ${medication.name}`}
+            title="Edit medication"
+            >
+            ✏️
+            </button>
+        </div>
+
+        <div className={styles.details}>
             <p>
-            <strong>Dosage:</strong> {medication.dosage}
+            <span>Dosage</span>
+            <strong>{medication.dosage}</strong>
             </p>
-        ) : null}
 
-        {medication.unit ? (
             <p>
-            <strong>Unit:</strong> {medication.unit}
+            <span>Frequency</span>
+            <strong>{medication.frequency}</strong>
             </p>
-        ) : null}
 
-        {medication.frequency ? (
+            {medication.start_date ? (
             <p>
-            <strong>Frequency:</strong> {medication.frequency}
+                <span>Start</span>
+                <strong>{medication.start_date}</strong>
             </p>
-        ) : null}
+            ) : null}
 
-        {medication.start_date ? (
+            {medication.end_date ? (
             <p>
-            <strong>Start Date:</strong> {medication.start_date}
+                <span>End</span>
+                <strong>{medication.end_date}</strong>
             </p>
-        ) : null}
+            ) : null}
+        </div>
 
-        {medication.end_date ? (
-            <p>
-            <strong>End Date:</strong> {medication.end_date}
-            </p>
-        ) : null}
+        {medication.notes ? <p className={styles.notes}>{medication.notes}</p> : null}
 
-        {medication.instructions ? (
-            <p>
-            <strong>Instructions:</strong> {medication.instructions}
-            </p>
-        ) : null}
-
-        {medication.notes ? <p>{medication.notes}</p> : null}
-
-        <button type="button" onClick={() => setIsEditing(true)}>
-            Edit
-        </button>
-
-        <button type="button" onClick={handleDelete}>
+        <div className={styles.actions}>
+            <button className={styles.dangerButton} type="button" onClick={handleDelete}>
             Delete
-        </button>
+            </button>
+        </div>
         </article>
     );
 }

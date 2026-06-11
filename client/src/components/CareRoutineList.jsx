@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./CareRoutineList.module.css";
 
 function formatTimeForDisplay(value) {
     if (!value) {
@@ -15,19 +16,24 @@ function formatTimeForDisplay(value) {
       hour: "numeric",
       minute: "2-digit",
     });
-}
+  }
 
-function CareRoutineList({
+  function CareRoutineList({
     careRoutines,
     onDeleteCareRoutine,
     onUpdateCareRoutine,
   }) {
     if (careRoutines.length === 0) {
-      return <p>No care routines added yet.</p>;
+      return (
+        <div className={styles.emptyState}>
+          <p>No care routines added yet.</p>
+          <span>Add a routine to start building this pet&apos;s care plan.</span>
+        </div>
+      );
     }
 
     return (
-      <div>
+      <div className={styles.cardGrid}>
         {careRoutines.map((routine) => (
           <CareRoutineCard
             key={routine.id}
@@ -102,12 +108,14 @@ function CareRoutineList({
 
     if (isEditing) {
       return (
-        <article>
-          <h3>Edit {routine.title}</h3>
+        <article className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3>Edit {routine.title}</h3>
+          </div>
 
           {error ? <p className="error">{error}</p> : null}
 
-          <form onSubmit={handleUpdate}>
+          <form className={styles.editForm} onSubmit={handleUpdate}>
             <label>
               Title
               <input
@@ -160,44 +168,65 @@ function CareRoutineList({
               />
             </label>
 
-            <button type="submit">Save</button>
-            <button type="button" onClick={handleCancel}>
-              Cancel
-            </button>
+            <div className={styles.actions}>
+              <button className={styles.primaryButton} type="submit">
+                Save
+              </button>
+              <button
+                className={styles.secondaryButton}
+                type="button"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         </article>
       );
     }
 
     return (
-      <article>
-        <h3>{routine.title}</h3>
+      <article className={styles.card}>
+        <div className={styles.cardHeader}>
+          <div>
+            <p className={styles.kicker}>{routine.category}</p>
+            <h3>{routine.title}</h3>
+          </div>
 
-        <p>
-          <strong>Category:</strong> {routine.category}
-        </p>
+          <button
+            className={styles.iconButton}
+            type="button"
+            onClick={() => setIsEditing(true)}
+            aria-label={`Edit ${routine.title}`}
+            title="Edit routine"
+          >
+            ✏️
+          </button>
+        </div>
 
-        {routine.frequency ? (
-          <p>
-            <strong>Frequency:</strong> {routine.frequency}
-          </p>
-        ) : null}
+        <div className={styles.details}>
+          {routine.frequency ? (
+            <p>
+              <span>Frequency</span>
+              <strong>{routine.frequency}</strong>
+            </p>
+          ) : null}
 
-        {routine.time_of_day ? (
-          <p>
-            <strong>Time:</strong> {formatTimeForDisplay(routine.time_of_day)}
-          </p>
-        ) : null}
+          {routine.time_of_day ? (
+            <p>
+              <span>Time</span>
+              <strong>{formatTimeForDisplay(routine.time_of_day)}</strong>
+            </p>
+          ) : null}
+        </div>
 
-        {routine.notes ? <p>{routine.notes}</p> : null}
+        {routine.notes ? <p className={styles.notes}>{routine.notes}</p> : null}
 
-        <button type="button" onClick={() => setIsEditing(true)}>
-          Edit
-        </button>
-
-        <button type="button" onClick={handleDelete}>
-          Delete
-        </button>
+        <div className={styles.actions}>
+          <button className={styles.dangerButton} type="button" onClick={handleDelete}>
+            Delete
+          </button>
+        </div>
       </article>
     );
 }
