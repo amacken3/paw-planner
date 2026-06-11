@@ -1,0 +1,26 @@
+.petGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.emptyState {
+  padding: 2rem;
+  border-radius: 18px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  text-align: center;
+}
+
+.emptyState p {
+  margin: 0;
+  color: #111827;
+  font-weight: 800;
+}
+
+.emptyState span {
+  display: block;
+  margin-top: 0.35rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}

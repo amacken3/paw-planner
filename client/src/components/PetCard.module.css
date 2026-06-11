@@ -1,0 +1,179 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 260px;
+  padding: 1.25rem;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.45rem;
+}
+
+.species {
+  margin: 0 0 0.25rem;
+  color: #f97316;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: none;
+  border-radius: 999px;
+  background: #fff7ed;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.iconButton:hover {
+  background: #fed7aa;
+  transform: scale(1.05);
+}
+
+.details {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.9rem;
+  border-radius: 16px;
+  background: #f9fafb;
+}
+
+.details p {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+}
+
+.details span {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.details strong {
+  color: #111827;
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.notes {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.detailsLink,
+.primaryButton,
+.secondaryButton,
+.dangerButton {
+  border: none;
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.detailsLink,
+.primaryButton {
+  background: #f97316;
+  color: #ffffff;
+}
+
+.detailsLink:hover,
+.primaryButton:hover {
+  background: #ea580c;
+}
+
+.secondaryButton {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.secondaryButton:hover {
+  background: #e5e7eb;
+}
+
+.dangerButton {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.dangerButton:hover {
+  background: #fecaca;
+}
+
+.editForm {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.editForm label {
+  display: grid;
+  gap: 0.35rem;
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.editForm input,
+.editForm textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+}
+
+.editForm input:focus,
+.editForm textarea:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.editForm textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}

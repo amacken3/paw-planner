@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import styles from "./PetCard.module.css";
 
 function PetCard({ pet, onDeletePet, onUpdatePet }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -55,12 +56,14 @@ function PetCard({ pet, onDeletePet, onUpdatePet }) {
 
     if (isEditing) {
         return (
-        <article>
+        <article className={styles.card}>
+            <div className={styles.cardHeader}>
             <h3>Edit {pet.name}</h3>
+            </div>
 
             {error ? <p className="error">{error}</p> : null}
 
-            <form onSubmit={handleUpdate}>
+            <form className={styles.editForm} onSubmit={handleUpdate}>
             <label>
                 Name
                 <input
@@ -93,26 +96,28 @@ function PetCard({ pet, onDeletePet, onUpdatePet }) {
                 />
             </label>
 
-            <label>
+            <div className={styles.formRow}>
+                <label>
                 Age
                 <input
-                type="number"
-                name="age"
-                value={formData.age}
-                onChange={handleChange}
+                    type="number"
+                    name="age"
+                    value={formData.age}
+                    onChange={handleChange}
                 />
-            </label>
+                </label>
 
-            <label>
+                <label>
                 Weight
                 <input
-                type="number"
-                step="0.1"
-                name="weight"
-                value={formData.weight}
-                onChange={handleChange}
+                    type="number"
+                    step="0.1"
+                    name="weight"
+                    value={formData.weight}
+                    onChange={handleChange}
                 />
-            </label>
+                </label>
+            </div>
 
             <label>
                 Notes
@@ -123,52 +128,76 @@ function PetCard({ pet, onDeletePet, onUpdatePet }) {
                 />
             </label>
 
-            <button type="submit">Save</button>
-            <button type="button" onClick={handleCancel}>
+            <div className={styles.actions}>
+                <button className={styles.primaryButton} type="submit">
+                Save
+                </button>
+                <button
+                className={styles.secondaryButton}
+                type="button"
+                onClick={handleCancel}
+                >
                 Cancel
-            </button>
+                </button>
+            </div>
             </form>
         </article>
         );
     }
 
     return (
-        <article>
-        <h3>{pet.name}</h3>
+        <article className={styles.card}>
+        <div className={styles.cardHeader}>
+            <div>
+            <p className={styles.species}>{pet.species}</p>
+            <h3>{pet.name}</h3>
+            </div>
 
-        <p>
-            <strong>Species:</strong> {pet.species}
-        </p>
+            <button
+            className={styles.iconButton}
+            type="button"
+            onClick={() => setIsEditing(true)}
+            aria-label={`Edit ${pet.name}`}
+            title="Edit pet"
+            >
+            ✏️
+            </button>
+        </div>
 
-        {pet.breed ? (
+        <div className={styles.details}>
+            {pet.breed ? (
             <p>
-            <strong>Breed:</strong> {pet.breed}
+                <span>Breed</span>
+                <strong>{pet.breed}</strong>
             </p>
-        ) : null}
+            ) : null}
 
-        {pet.age ? (
+            {pet.age ? (
             <p>
-            <strong>Age:</strong> {pet.age}
+                <span>Age</span>
+                <strong>{pet.age}</strong>
             </p>
-        ) : null}
+            ) : null}
 
-        {pet.weight ? (
+            {pet.weight ? (
             <p>
-            <strong>Weight:</strong> {pet.weight}
+                <span>Weight</span>
+                <strong>{pet.weight} lbs</strong>
             </p>
-        ) : null}
+            ) : null}
+        </div>
 
-        {pet.notes ? <p>{pet.notes}</p> : null}
+        {pet.notes ? <p className={styles.notes}>{pet.notes}</p> : null}
 
-        <Link to={`/pets/${pet.id}`}>View Details</Link>
+        <div className={styles.actions}>
+            <Link className={styles.detailsLink} to={`/pets/${pet.id}`}>
+            View Details
+            </Link>
 
-        <button type="button" onClick={() => setIsEditing(true)}>
-            Edit
-        </button>
-
-        <button type="button" onClick={handleDelete}>
+            <button className={styles.dangerButton} type="button" onClick={handleDelete}>
             Delete
-        </button>
+            </button>
+        </div>
         </article>
     );
 }

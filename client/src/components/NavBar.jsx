@@ -1,24 +1,30 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import styles from "./NavBar.module.css";
 
 function NavBar() {
     const { user, logout } = useUser();
 
+    function getLinkClass({ isActive }) {
+        return isActive ? `${styles.link} ${styles.activeLink}` : styles.link;
+    }
+
+    function getBrandClass({ isActive }) {
+        return isActive ? `${styles.brand} ${styles.activeBrand}` : styles.brand;
+    }
+
     return (
         <nav className={styles.nav}>
-        <Link className={styles.brand} to="/">
+        <NavLink className={getBrandClass} to="/">
             PawPlanner
-        </Link>
+        </NavLink>
 
         {user ? (
             <>
-            <Link className={styles.link} to="/">
-                Home
-            </Link>
-            <Link className={styles.link} to="/dashboard">
+            <NavLink className={getLinkClass} to="/dashboard">
                 Dashboard
-            </Link>
+            </NavLink>
+
             <button
                 className={styles.logoutButton}
                 type="button"
@@ -29,12 +35,13 @@ function NavBar() {
             </>
         ) : (
             <>
-            <Link className={styles.link} to="/login">
+            <NavLink className={getLinkClass} to="/login">
                 Login
-            </Link>
-            <Link className={styles.link} to="/signup">
+            </NavLink>
+
+            <NavLink className={getLinkClass} to="/signup">
                 Sign Up
-            </Link>
+            </NavLink>
             </>
         )}
         </nav>
