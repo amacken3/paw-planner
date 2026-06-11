@@ -49,7 +49,7 @@ function Dashboard() {
         throw new Error(data.error || "Unable to create pet.");
       }
 
-      ssetPets([...pets, data]);
+      setPets([...pets, data]);
       setShowPetForm(false);
       return data;
     }
@@ -133,7 +133,9 @@ function Dashboard() {
                 <p className={styles.kicker}>Overview</p>
                 <h2>My Pets</h2>
               </div>
-              <span className={styles.countBadge}>{pets.length} pets</span>
+              <span className={styles.countBadge}>
+                {pets.length} {pets.length === 1 ? "pet" : "pets"}
+              </span>
             </div>
 
             <PetList
