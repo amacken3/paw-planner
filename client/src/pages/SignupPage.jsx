@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import styles from "./AuthPage.module.css";
 
 function SignupPage() {
     const [formData, setFormData] = useState({
@@ -34,51 +35,62 @@ function SignupPage() {
     }
 
     return (
-        <main>
-        <h1>Sign Up</h1>
+        <main className={styles.page}>
+        <section className={styles.card}>
+            <div className={styles.intro}>
+            <p className={styles.kicker}>Create account</p>
+            <h1>Start planning your pet care</h1>
+            <p>
+                Create a PawPlanner account to save your pets, care routines,
+                medications, and care events.
+            </p>
+            </div>
 
-        {error ? <p className="error">{error}</p> : null}
+            {error ? <p className="error">{error}</p> : null}
 
-        <form onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
             <label>
-            Username
-            <input
+                Username
+                <input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
                 required
-            />
+                />
             </label>
 
             <label>
-            Email
-            <input
+                Email
+                <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-            />
+                />
             </label>
 
             <label>
-            Password
-            <input
+                Password
+                <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 required
-            />
+                />
             </label>
 
-            <button type="submit">Create Account</button>
-        </form>
+            <button className={styles.primaryButton} type="submit">
+                Create Account
+            </button>
+            </form>
 
-        <p>
+            <p className={styles.switchText}>
             Already have an account? <Link to="/login">Log in here.</Link>
-        </p>
+            </p>
+        </section>
         </main>
     );
 }

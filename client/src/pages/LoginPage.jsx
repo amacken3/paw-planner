@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import styles from "./AuthPage.module.css";
 
 function LoginPage() {
     const [formData, setFormData] = useState({
@@ -33,42 +34,53 @@ function LoginPage() {
     }
 
     return (
-        <main>
-        <h1>Login</h1>
+        <main className={styles.page}>
+        <section className={styles.card}>
+            <div className={styles.intro}>
+            <p className={styles.kicker}>Welcome back</p>
+            <h1>Log in to PawPlanner</h1>
+            <p>
+                Continue managing your pet profiles, routines, medications, and care
+                events.
+            </p>
+            </div>
 
-        {error ? <p className="error">{error}</p> : null}
+            {error ? <p className="error">{error}</p> : null}
 
-        <form onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
             <label>
-            Email
-            <input
+                Email
+                <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-            />
+                />
             </label>
 
             <label>
-            Password
-            <input
+                Password
+                <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 required
-            />
+                />
             </label>
 
-            <button type="submit">Login</button>
-        </form>
+            <button className={styles.primaryButton} type="submit">
+                Login
+            </button>
+            </form>
 
-        <p>
+            <p className={styles.switchText}>
             Need an account? <Link to="/signup">Sign up here.</Link>
-        </p>
+            </p>
+        </section>
         </main>
     );
-    }
+}
 
 export default LoginPage;
