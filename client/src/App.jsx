@@ -1,40 +1,40 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import NavBar from "./components/NavBar";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import PetDetails from "./pages/PetDetails";
 import "./App.css";
 
-function HomePage() {
+function ProtectedRoute({ children }) {
+  const { user, isCheckingSession } = useUser();
+
+  if (isCheckingSession) {
     return (
       <main>
-        <h1>PawPlanner</h1>
-        <p>Organize your pets, care routines, medications, and care events.</p>
+        <p>Checking session...</p>
       </main>
     );
   }
 
-  function ProtectedRoute({ children }) {
-    const { user, isCheckingSession } = useUser();
-
-    if (isCheckingSession) {
-      return <main><p>Checking session...</p></main>;
-    }
-
-    if (!user) {
-      return <Navigate to="/login" replace />;
-    }
-
-    return children;
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
 
-  function RedirectIfLoggedIn({ children }) {
+  return children;
+}
+
+function RedirectIfLoggedIn({ children }) {
     const { user, isCheckingSession } = useUser();
 
     if (isCheckingSession) {
-      return <main><p>Checking session...</p></main>;
+      return (
+        <main>
+          <p>Checking session...</p>
+        </main>
+      );
     }
 
     if (user) {
@@ -42,9 +42,9 @@ function HomePage() {
     }
 
     return children;
-  }
+}
 
-  function App() {
+function App() {
     return (
       <BrowserRouter>
         <NavBar />
@@ -78,7 +78,7 @@ function HomePage() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/pets/:id"
             element={
