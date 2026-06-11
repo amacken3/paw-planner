@@ -1,0 +1,163 @@
+.page {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-bottom: 1.5rem;
+  padding: 2rem;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fff7ed, #fef3c7);
+  border: 1px solid #fed7aa;
+  box-shadow: 0 24px 60px rgba(120, 53, 15, 0.1);
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.kicker {
+  margin: 0;
+  color: #f97316;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 680px;
+  margin: 0;
+  color: #111827;
+  font-size: clamp(2.5rem, 5vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.subtitle {
+  max-width: 620px;
+  margin: 0;
+  color: #4b5563;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.primaryLink,
+.secondaryLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  padding: 0.8rem 1rem;
+  font-weight: 900;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.primaryLink {
+  background: #f97316;
+  color: #ffffff;
+}
+
+.primaryLink:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+.secondaryLink {
+  background: rgba(255, 255, 255, 0.8);
+  color: #111827;
+  border: 1px solid rgba(254, 215, 170, 0.9);
+}
+
+.secondaryLink:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.heroCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(254, 215, 170, 0.9);
+}
+
+.heroCard h2 {
+  margin: 0.35rem 0 0;
+  color: #111827;
+  font-size: 1.9rem;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.heroCard p:last-child {
+  margin: 0.85rem 0 0;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.featureCard {
+  padding: 1.35rem;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.featureCard h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.25rem;
+}
+
+.featureCard p {
+  margin: 0.5rem 0 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .page {
+    padding-top: 1.25rem;
+  }
+
+  .hero {
+    padding: 1.5rem;
+  }
+
+  .heroCard,
+  .featureCard {
+    padding: 1.15rem;
+  }
+}
