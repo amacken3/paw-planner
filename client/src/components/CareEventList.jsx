@@ -112,6 +112,9 @@ function formatDateTimeForBackend(value) {
     const routineTitle = getRoutineTitle(careRoutines, careEvent.care_routine_id);
     const medicationName = getMedicationName(medications, careEvent.medication_id);
     const isCompleted = careEvent.status === "completed";
+    const isMissed = careEvent.status === "missed";
+    const isCancelled = careEvent.status === "cancelled";
+    const isScheduled = careEvent.status === "scheduled";
 
     function handleChange(event) {
       setFormData({
@@ -142,22 +145,25 @@ function formatDateTimeForBackend(value) {
       }
     }
 
-    async function handleToggleComplete() {
-      try {
-        const careEventData = isCompleted
-          ? {
-              status: "scheduled",
-              completed_at: null,
-            }
-          : {
-              status: "completed",
-              completed_at: formatNowForBackend(),
-            };
+    async function handleSetStatus(status) {
+        try {
+          const completedAt = status === "completed" ? formatNowForBackend() : null;
 
-        await onUpdateCareEvent(careEvent.id, careEventData);
-      } catch (error) {
-        alert(error.message);
-      }
+          const careEventData = {
+            status: status,
+            completed_at: completedAt,
+          };
+
+          await onUpdateCareEvent(careEvent.id, careEventData);
+
+          setFormData((currentFormData) => ({
+            ...currentFormData,
+            status: status,
+            completed_at: completedAt ? formatDateTimeForInput(completedAt) : "",
+          }));
+        } catch (error) {
+          alert(error.message);
+        }
     }
 
     async function handleDelete() {
@@ -363,21 +369,53 @@ function formatDateTimeForBackend(value) {
           ) : null}
         </div>
 
-        {careEvent.notes ? <p className={styles.notes}>{careEvent.notes}</p> : null}
+              {careEvent.notes ? <p className={styles.notes}>{careEvent.notes}</p> : null}
 
-        <div className={styles.actions}>
+              <div className={styles.actions}>
+        {!isCompleted ? (
           <button
-            className={isCompleted ? styles.secondaryButton : styles.primaryButton}
+            className={styles.primaryButton}
             type="button"
-            onClick={handleToggleComplete}
+            onClick={() => handleSetStatus("completed")}
           >
-            {isCompleted ? "Mark Incomplete" : "Mark Complete"}
+            Mark Complete
           </button>
+        ) : null}
 
-          <button className={styles.dangerButton} type="button" onClick={handleDelete}>
-            Delete
+        {!isMissed ? (
+          <button
+            className={styles.secondaryButton}
+            type="button"
+            onClick={() => handleSetStatus("missed")}
+          >
+            Mark Missed
           </button>
-        </div>
+        ) : null}
+
+        {!isCancelled ? (
+          <button
+            className={styles.secondaryButton}
+            type="button"
+            onClick={() => handleSetStatus("cancelled")}
+          >
+            Cancel Event
+          </button>
+        ) : null}
+
+        {!isScheduled ? (
+          <button
+            className={styles.secondaryButton}
+            type="button"
+            onClick={() => handleSetStatus("scheduled")}
+          >
+            Reset Scheduled
+          </button>
+        ) : null}
+
+        <button className={styles.dangerButton} type="button" onClick={handleDelete}>
+          Delete
+        </button>
+      </div>
       </article>
     );
 }
