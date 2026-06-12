@@ -99,7 +99,8 @@ Care routines are intended for repeatable tasks such as feeding, walking, groomi
 
 The Care Timeline section contains specific scheduled or completed care actions.
 
-Care events can stand alone or be connected to a related care routine or medication. Events can also be marked complete or incomplete.
+Care events can stand alone or be connected to a related care routine or medication. Giving the user the ability to create, edit, delete, and update care events with quick status actions for scheduled, completed, missed, and cancelled care
+
 
 ## Data Model Summary
 
