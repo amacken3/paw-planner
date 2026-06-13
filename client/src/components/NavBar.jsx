@@ -36,7 +36,7 @@ function NavBar() {
         ) : (
             <>
             <NavLink className={getLinkClass} to="/login">
-                Login
+                Log In
             </NavLink>
 
             <NavLink className={getLinkClass} to="/signup">
